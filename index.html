@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <style>
+    :root{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    body {
+      background-color: #333333;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 2px;
+      margin-bottom: 10px;
+    }
+    .cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid black;
+      font-size: 24px;
+      cursor: pointer;
+      transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+      color: white; /* Set cell text color to white */
+    }
+    .message {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="message">Player 0's Turn</div>
+<div class="board">
+  <div class="cell" onclick="makeMove(0, 0)"></div>
+  <div class="cell" onclick="makeMove(0, 1)"></div>
+  <div class="cell" onclick="makeMove(0, 2)"></div>
+  <div class="cell" onclick="makeMove(1, 0)"></div>
+  <div class="cell" onclick="makeMove(1, 1)"></div>
+  <div class="cell" onclick="makeMove(1, 2)"></div>
+  <div class="cell" onclick="makeMove(2, 0)"></div>
+  <div class="cell" onclick="makeMove(2, 1)"></div>
+  <div class="cell" onclick="makeMove(2, 2)"></div>
+</div>
+
+<script>
+    const players = ['X', 'O'];
+    let board = [
+      ['', '', ''],
+      ['', '', ''],
+      ['', '', '']
+    ];
+    let currentPlayer = 0;
+    let moveCounter = 0;
+    let playerMoves = [[], []];
+  
+    function printBoard() {
+      let cells = document.querySelectorAll('.cell');
+      cells.forEach((cell, index) => {
+        let row = Math.floor(index / 3);
+        let col = index % 3;
+        cell.innerText = board[row][col];
+        if (cell.innerText === 'X') {
+          cell.style.color = '#FF4242'; // Set color for X
+        } else if (cell.innerText === 'O') {
+          cell.style.color = '#95D2EC'; // Set color for O
+        }
+      });
+    }
+  
+    function resetBoard() {
+      board = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+      ];
+      currentPlayer = 0;
+      moveCounter = 0;
+      playerMoves = [[], []];
+      printBoard();
+      document.querySelector('.message').innerText = 'Player 0\'s Turn';
+    }
+  
+    function checkWin(player) {
+      for (let i = 0; i < 3; i++) {
+        if ((board[i][0] === player && board[i][1] === player && board[i][2] === player) ||
+            (board[0][i] === player && board[1][i] === player && board[2][i] === player) ||
+            (board[0][0] === player && board[1][1] === player && board[2][2] === player) ||
+            (board[0][2] === player && board[1][1] === player && board[2][0] === player)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  
+    function makeMove(row, col) {
+      if (board[row][col] === '' && !checkWin(players[(currentPlayer + 1) % 2])) {
+        board[row][col] = players[currentPlayer];
+        playerMoves[currentPlayer].push({ row, col });
+        moveCounter++;
+        if (moveCounter > 8) {
+          let oldestMove = playerMoves[currentPlayer].shift();
+          board[oldestMove.row][oldestMove.col] = ''; // Remove oldest move from the board
+        }
+        printBoard();
+        if (checkWin(players[currentPlayer])) {
+          document.querySelector('.message').innerText = players[currentPlayer] + ' wins!';
+          setTimeout(resetBoard, 1500); // Reset the board after 1.5 seconds
+        } else {
+          currentPlayer = (currentPlayer + 1) % 2;
+          document.querySelector('.message').innerText = 'Player ' + currentPlayer + '\'s Turn';
+        }
+      } else {
+        document.querySelector('.message').innerText = 'Invalid move! Cell is already occupied or the game is over.';
+      }
+    }
+  
+    printBoard();
+  </script>
+</body>
+</html>
