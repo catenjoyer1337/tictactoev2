@@ -9,7 +9,6 @@ Inspired by a captivating TikTok video, I decided to recreate this unique versio
 ### Key Features
 - **Dynamic Gameplay**: Only the last 8 moves are visible, keeping the game fresh and challenging.
 - **Real-Time Move Management**: Automatically deletes older moves as new ones are made, ensuring a constantly evolving game state.
-- **Responsive Design**: Works seamlessly across different devices, providing an enjoyable experience whether on mobile or desktop.
 - **User-Friendly Interface**: Simple and intuitive UI, allowing players to jump right in without a steep learning curve.
 
 ## Demo
